@@ -1,0 +1,15 @@
+body {
+  background: #f9e933;
+}
+
+headr, main, footer{
+  min-width: 855px;
+}
+header{
+  background: white;
+  overflow: auto;
+}
+headr h1{
+  float: left;
+  width: 570px;
+}
