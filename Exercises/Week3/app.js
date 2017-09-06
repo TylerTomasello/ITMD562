@@ -16,7 +16,8 @@ var addCommentFromInputBox = function () {
     $new_comment.fadeIn();
     $comment_text.val("");
   }
-}
+};
+
 $("comment-input button").on("click", function () {
   addCommentFromInputBox();
 });
