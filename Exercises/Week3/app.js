@@ -22,7 +22,6 @@ $("comment-input button").on("click", function () {
 });
 
 $(".comment-input button").on("keypress", function (event) {
-  var $comment_text = $(".comment-input input");
   if(event.keyCode == 13){
     addCommentFromInputBox();
   }
