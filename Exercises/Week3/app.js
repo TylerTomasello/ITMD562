@@ -5,6 +5,12 @@ var main = function () {
 };
 $(document).ready(main);
 
+$("comment-input button")
+$("comment-input button").on("click", function () {
+  var newP = $(<p>My New Element</p>);
+  $(.comments).append($newP);
+}
+
 style.css
 * {
   margin: 0;
