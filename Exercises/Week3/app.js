@@ -1,18 +1,29 @@
+/*
 var main = function () {
   "use strict";
 
   window.alert("hello world!");
 };
 $(document).ready(main);
+*/
 
-$("comment-input button")
+var addCommentFromInputBox = function () {
+  var $comment_text = $(".comment-input input");
+  if($comment_text.val() !== ""){
+    var $new_comment = $("<p>");
+    $new_comment.text($comment_text.val());
+    $(".comments").append($new_comment);
+    $new_comment.fadeIn();
+    $comment_text.val("");
+  }
+}
 $("comment-input button").on("click", function () {
-  var newP = $(<p>My New Element</p>);
-  $(.comments).append($newP);
-}
+  addCommentFromInputBox();
+});
 
-style.css
-* {
-  margin: 0;
-  padding: 0;
-}
+$(".comment-input button").on("keypress", function (event) {
+  var $comment_text = $(".comment-input input");
+  if(event.keyCode == 13){
+    addCommentFromInputBox();
+  }
+});
