@@ -31,6 +31,15 @@ var main = function (toDoObjects) {
                     $content.append($("<li>").text(todo));
                 });
             } else if ($element.parent().is(":nth-child(3)")) {
+                var tags = [];
+                toDoObjects.forEach(function (toDo) {
+                  toDo.tags.forEach(function (tag) {
+                    if (tags.indexOf(tag) === -1) {
+                      tags.push(tag);
+                    }
+                  });
+                });
+            }else if ($element.parent().is(":nth-child(4)")) {
                 // input a new to-do
                 $input = $("<input>"),
                 $button = $("<button>").text("+");
