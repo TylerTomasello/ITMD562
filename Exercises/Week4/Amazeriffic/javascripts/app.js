@@ -39,6 +39,32 @@ var main = function (toDoObjects) {
                     }
                   });
                 });
+                console.log(tags);
+
+                var tagObjects = tags.map(function (tag) {
+                  var toDosByTag = [];
+
+                  toDoObjects.forEach(function (toDo) {
+                    if (toDO.indexOf(tag) !== -1) {
+                      toDosByTag.push(toDo.description);
+                    }
+                  });
+                  return { "name": tag, "toDos" : toDosByTag }
+                });
+                console.log(tagObjects);
+
+                tagObjects.forEach(function (tag) {
+                  var $tagName = $("<h3>").text(tag.name);
+                  var $content = $("<ul>");
+
+                  tag.toDos.forEach(function (description) {
+                    var $li $("<li>").text(description);
+                    $content.append($li);
+                  });
+
+                  $("main .content").append($tagName);
+                  $("main .content").append($content);
+                });
             }else if ($element.parent().is(":nth-child(4)")) {
                 // input a new to-do
                 $input = $("<input>"),
