@@ -15,11 +15,15 @@ $.getJSON("cards/hand.json", function (hand) {
   $("main").append($handUl);
 });
 
-var url=""
-$.getJSON(url, function (flickrResponse) {
-  flickrResponse.items.forEach(function(photo){
+var requestURL="http://api.flickr.com/services/feeds/photos_public.gne?tags=dogs&format=json&jsoncallback=?";
+$.getJSON(requestURL, function (flickrResponse) {
+  //Iterate over items
+  flickrResponse.items.forEach(function (item){
+    //Build an img tag using item.media.m
     var $img = $("<img>");
-    $img.attr("src", photo.media.m);
+    $img.attr("src", item.media.m);
+    //Add to the DOM
     $("main .photos").append($img);
+    $img.fadeIn();
   });
 });
