@@ -20,7 +20,7 @@ $.getJSON(requestURL, function (flickrResponse) {
   //Iterate over items
   flickrResponse.items.forEach(function (item){
     //Build an img tag using item.media.m
-    var $img = $("<img>");
+    var $img = $("<img>").hide();
     $img.attr("src", item.media.m);
     //Add to the DOM
     $("main .photos").append($img);
