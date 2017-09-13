@@ -14,3 +14,12 @@ $.getJSON("cards/hand.json", function (hand) {
   });
   $("main").append($handUl);
 });
+
+var url=""
+$.getJSON(url, function (flickrResponse) {
+  flickrResponse.items.forEach(function(photo){
+    var $img = $("<img>");
+    $img.attr("src", photo.media.m);
+    $("main .photos").append($img);
+  });
+});
