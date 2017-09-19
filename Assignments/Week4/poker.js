@@ -75,4 +75,26 @@ handAssessor(array){
 
     return result;
   };
+
+  //this finds if there is a full house
+  var containsFourOfAKind = function (hand) {
+    var result = false,
+    handRanks;
+
+    handRanks = hand.map(function (card) {
+      return card.rank;
+    });
+
+    ranks.forEach(function (rank) {
+      if (containsNTimes(handRanks, rank, 2)){
+        ranks.forEach(function (rank) {
+          if (containsNTimes(handRanks, rank, 3)){
+            result = true;
+          }
+        });
+      }
+    });
+
+    return result;
+  };
 }
