@@ -59,7 +59,7 @@ handAssessor(array){
   };
 
   //this finds if there is a flush
-  var containsFourOfAKind = function (hand) {
+  var containsFlush = function (hand) {
     var result = false,
     handSuits;
 
@@ -77,7 +77,7 @@ handAssessor(array){
   };
 
   //this finds if there is a full house
-  var containsFourOfAKind = function (hand) {
+  var containsFullHouse = function (hand) {
     var result = false,
     handRanks;
 
@@ -97,4 +97,6 @@ handAssessor(array){
 
     return result;
   };
+
+
 }
