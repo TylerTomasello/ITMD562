@@ -1,7 +1,8 @@
 handAssessor(array){
   var ranks = ["two", "three", "four", "five", "six", "seven", "eight",
                "nine", "ten", "jack", "queen", "king", "ace"];
-
+  var suits = ["spades", "hearts", "clubs", "diamons"];
+  
   //this finds if there is a two pair
   var containsPair = function (hand) {
     var result = false,
