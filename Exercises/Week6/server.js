@@ -8,7 +8,7 @@ rdisClient.get("counter", function(err, value){
 });
 
 http.createServer(function (req, res) {
-  redis.Client
+  redis.Client.incr(counter);
   res.writeHead(200, {'Content-type': 'text/plain'});
   res.edn('Hello World!\n Counter: ' + counter);
 
