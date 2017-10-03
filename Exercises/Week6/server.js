@@ -12,4 +12,4 @@ http.createServer(function (req, res) {
   res.writeHead(200, {'Content-type': 'text/plain'});
   res.edn('Hello World!\n Counter: ' + counter);
 
-})
+});
