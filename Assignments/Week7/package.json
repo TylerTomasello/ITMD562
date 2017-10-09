@@ -1,4 +1,12 @@
 {
+  "name": "week7hw",
+  "description": "Using nodejs",
+  "version": "0.0.1",
+  "dependencies": {
+    "mongodb": ""
+  }
+}
+{
   "rank":"a",
   "suit":"spade"
 }
