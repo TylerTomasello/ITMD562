@@ -1,12 +1,6 @@
 {
-  "name": "week7hw",
-  "description": "Using nodejs",
-  "version": "0.0.1",
+  "hand": "01", "cards" : [{"suit": "spades", "rank": "a"}],
   "dependencies": {
-    "mongodb": ""
+    "express": "^4.16.1"
   }
-}
-{
-  "rank":"a",
-  "suit":"spade"
 }
