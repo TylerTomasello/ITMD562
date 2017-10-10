@@ -1,5 +1,7 @@
 {
-  "hand": "01", "cards" : [{"suit": "spades", "rank": "a"}],
+  "name": "assignment-week7",
+  "description": "Using get, post, and put for poker problem",
+  "version" : "0.0.1",
   "dependencies": {
     "express": "^4.16.1"
   }
