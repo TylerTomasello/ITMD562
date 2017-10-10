@@ -2,9 +2,13 @@ const express = require('express')
 const http = require("http")
 const app = express()
 
-var hand = {"id": "01", "cards": [{"suit": "spades", "rank": "a"}]}
+var hand = {"id": "01", "cards": [{"suit": "spades", "rank": "a"},
+                                  {"suit": "spades", "rank": "10"},
+                                  {"suit": "hearts", "rank": "7"},
+                                  {"suit": "clubs",  "rank": "10"},
+                                  {"suit": "spades", "rank": "9"}]}
 
-app.get('/hands/:handId', function (req, res) {
+app.get('/', function (req, res) {
   res.status(200).send(hand)
 });
 
