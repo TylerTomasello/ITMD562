@@ -1,3 +1,7 @@
+/* Tyler Tomasello
+*  Week 7 assignment-week
+*  10/10/17
+*/
 var express = require('express');
 var http = require('http');
 var mongoose = require('mongoose');
@@ -5,6 +9,7 @@ var app = express();
 
 //app.use(express.bodyParser());
 
+//use mongoose to connect to a database
 mongoose.connect('mongodb://localhost/poker', {
   useMongoClient: true,
 });
@@ -14,6 +19,8 @@ mongoose.connect('mongodb://localhost/poker', {
                                   {"suit": "hearts", "rank": "7"},
                                   {"suit": "clubs",  "rank": "10"},
                                   {"suit": "spades", "rank": "9"}]}];*/
+
+//make schema to input data
 var handSchema = mongoose.Schema({
   id: String,
   cards: [String]
@@ -21,8 +28,7 @@ var handSchema = mongoose.Schema({
 
 var hand = mongoose.model("hand", handSchema);
 
-//http.createServer[app].listen(3000);
-
+//get to find hands and print hand id and array of cards
 app.get('/', function (req, res) {
   hand.find({}, function(err, hands){
     if(err !== null){
@@ -35,6 +41,7 @@ app.get('/', function (req, res) {
   //res.status(200).send(hand);
 });
 
+//get to find cards and just display the array
 app.get('/', function (req, res) {
   hand.find({}, function(err, cards){
     if(err !== null){
@@ -47,13 +54,14 @@ app.get('/', function (req, res) {
   //res.status(200).send(hand);
 });
 
-/*app.get('/', function (req, res) {
-  res.send('Hello World!');
-});*/
-
+//post to add a new array of 5 cards
 app.post('/hands', function (req, res){
   console.log(req.body);
-  var newhand = new hand({"id":req.body.id, "cards": req.body.cards});
+  var newhand = new hand({"id":req.body.id, "cards": [req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards]});
   newhand.save(function (err, result){
     if (err !== null) {
       console.log(err);
@@ -65,9 +73,14 @@ app.post('/hands', function (req, res){
   });
 });
 
+//put to update an existing array or cards
 app.put('/hands', function (req, res){
   console.log(req.body);
-  var newhand = new hand({"id":req.body.id, "cards": req.body.cards});
+  var newhand = new hand({"id":req.body.id, "cards": [req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards]});
   newhand.save(function (err, result){
     if (err !== null) {
       console.log(err);
@@ -79,6 +92,7 @@ app.put('/hands', function (req, res){
   });
 });
 
+//listen to let user know the app is running on port 3000
 app.listen(3000, function (){
   console.log('Poker app listening on port 3000');
 });
