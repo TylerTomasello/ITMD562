@@ -3,6 +3,8 @@
   "description": "Using get, post, and put for poker problem",
   "version" : "0.0.1",
   "dependencies": {
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.12.1"
   }
 }
