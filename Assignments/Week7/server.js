@@ -38,23 +38,18 @@ app.get('/hands/:handId', function (req, res) {
     });
   },
   function(err){
-    res.status(404).send({
-      'status': 404,
-      'error': err
-    });
+    res.status(404).send('No hand was found with id: '+ hand);
   });
   //res.status(200).send(hand);
 });
 
 //get to find cards and just display the array
 app.get('/hands/:handId/cards', function (req, res) {
-  hand.find({}, function(err, cards){
-    if(err !== null){
-    res.status(404);
-    }
-    else{
-    res.status(200).json(cards);
-    }
+  hand.findById({_id: req.params.handId}, 'cards').then(function(hands){
+    res.status(200).send(hands.cards);
+  },
+  function(err){
+    res.status(404).send('No hand was found with id: '+ hand);
   });
   //res.status(200).send(hand);
 });
