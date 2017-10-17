@@ -6,14 +6,13 @@
 var express = require('express');
 var http = require('http');
 var mongoose = require('mongoose');
+var bodyParser = require("body-parser");
 var app = express();
 
-//app.use(express.bodyParser());
+app.use(bodyParser.json());
 
 //use mongoose to connect to a database
-mongoose.connect('mongodb://localhost/poker', {
-  useMongoClient: true,
-});
+mongoose.connect('mongodb://localhost:27017/poker');
 
 /*var hand = [{"id": "01", "cards": [{"suit": "spades", "rank": "a"},
                                   {"suit": "spades", "rank": "10"},
@@ -23,27 +22,32 @@ mongoose.connect('mongodb://localhost/poker', {
 
 //make schema to input data
 var handSchema = mongoose.Schema({
-  id: String,
-  cards: [String]
+  cards: {
+    kind: []
+  }
 });
 
 var hand = mongoose.model("hand", handSchema);
 
 //get to find hands and print hand id and array of cards
-app.get('/', function (req, res) {
-  hand.find({}, function(err, hands){
-    if(err !== null){
-    res.status(404);
-    }
-    else{
-    res.status(200).json(hands);
-    }
-  })
+app.get('/hands/:handId', function (req, res) {
+  hand.findById(req.params.handId).then(function(hands){
+    res.status(200).send({
+      'id': hands._id,
+      'cards': hands.cards
+    });
+  },
+  function(err){
+    res.status(404).send({
+      'status': 404,
+      'error': err
+    });
+  });
   //res.status(200).send(hand);
 });
 
 //get to find cards and just display the array
-app.get('/', function (req, res) {
+app.get('/hands/:handId/cards', function (req, res) {
   hand.find({}, function(err, cards){
     if(err !== null){
     res.status(404);
@@ -51,7 +55,7 @@ app.get('/', function (req, res) {
     else{
     res.status(200).json(cards);
     }
-  })
+  });
   //res.status(200).send(hand);
 });
 
