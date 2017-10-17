@@ -56,20 +56,13 @@ app.get('/hands/:handId/cards', function (req, res) {
 
 //post to add a new array of 5 cards
 app.post('/hands', function (req, res){
-  console.log(req.body);
-  var newhand = new hand({"id":req.body.id, "cards": [req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards]});
-  newhand.save(function (err, result){
-    if (err !== null) {
-      console.log(err);
-      res.send("ERROR");
-    }
-    else {
-      res.stuatus(200).json(result);
-    }
+  var hand = new hand();
+  hand.cards = req.body;
+  hand.save().then(function (doc){
+    res.stuatus(200).json({'id': doc._id});
+  },
+  function(err){
+    res.send(err);
   });
 });
 
