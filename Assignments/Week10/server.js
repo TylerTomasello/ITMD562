@@ -31,3 +31,10 @@
             Return 204 No Content upon success
             Return 404 if user or reminder doesn't exist
 */
+
+var express = require('express');
+var http = require('http');
+var bodyParser = require('body-parser');
+var app = express();
+
+app.use(bodyParser.json());
