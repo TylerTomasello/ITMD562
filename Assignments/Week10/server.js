@@ -40,13 +40,11 @@ var app = express();
 app.use(bodyParser.json());
 
 app.get('/users/:userId', function (req, res) {
-  hand.findById(req.params.userId).then(function(users){
-    res.status(200).send({
-      'name': users.name,
-      'email': users.email
-    });
-  },
-  function(err){
+  var userId=req.params.userId;
+  if(!users[userid-1]){
     res.status(404).send('No user was found with id');
-  });
+  }
+  else{
+    res.status(200).send(users[userId-1]);
+  }
 });
