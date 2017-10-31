@@ -166,6 +166,25 @@ app.delete('/users/:userId/reminders', function (req,res){
   });
 });
 
+app.delete('/users/:userId/reminders/reminderId', function (req,res){
+  user.findById(req.params.userId, function(err, user) {
+    if (err) {
+      res.status(404).send(err);
+    }
+    else {
+      user.reminder.pull(req.params.reminderId);
+      user.save(function(err, user) {
+        if (err) {
+          res.status(404).send(err);
+        }
+        else {
+          res.status(204).send({message : 'Reminder deleted'});
+        }
+      }
+    }
+  });
+});
+
 app.listen(3000, function (){
   console.log('User app listening on port 3000');
 });
