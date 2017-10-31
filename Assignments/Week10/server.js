@@ -1,4 +1,14 @@
+/* Tyler Tomasello
+*  server.js
+*  Week 10 assignment-week10
+*  10/31/17
+*
+* Useful links I used for guidence:
+*  https://www.codementor.io/olatundegaruba/nodejs-restful-apis-in-10-minutes-q0sgsfhbd
+*  http://mongoosejs.com/docs/queries.html
+*/
 
+//required items to run properly
 var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
@@ -10,6 +20,7 @@ app.use(bodyParser.json());
 //use mongoose to connect to a database
 mongoose.connect('mongodb://localhost:27017/user');
 
+//make schema to input data
 var userSchema = mongoose.Schema({
   name : String,
   email : String,
@@ -23,6 +34,7 @@ var userSchema = mongoose.Schema({
 var user = mongoose.model('user', userSchema);
 
 
+//get to find usersId and displaying name and email
 app.get('/users/:userId', function (req, res) {
   user.findById(req.params.userId, function (err, user){
     if (err){
@@ -37,6 +49,7 @@ app.get('/users/:userId', function (req, res) {
   });
 });
 
+//get to find reminders of a user and display the reminder title and description
 app.get('/users/:userId/reminders', function (req, res) {
   user.findById(req.params.userId, function(err, user) {
     if (err) {
@@ -56,6 +69,7 @@ app.get('/users/:userId/reminders', function (req, res) {
   });
 });
 
+//get to find a specific reminder and display the title description and created
 app.get('/users/:userId/reminders/:reminderId', function (req, res) {
   user.findById(req.params.userId, function (err, user) {
     if (err){
@@ -71,6 +85,7 @@ app.get('/users/:userId/reminders/:reminderId', function (req, res) {
   });
 });
 
+//post to create a new user and input the name and email
 app.post('/users', function (req, res) {
   var new_user=new user({
     name : req.body.name,
@@ -86,6 +101,8 @@ app.post('/users', function (req, res) {
   });
 });
 
+//post to create a new reminder for a user with a title and description.
+//The time is automatically put in
 app.post('/users/:userId/reminders', function (req, res) {
   var current=new Date();
   //array of current month, date, and year
@@ -98,6 +115,7 @@ app.post('/users/:userId/reminders', function (req, res) {
       time[i]= "0" + time[i];
     }
   }
+  //variable for the timestamp to be used
   var timestamp = date.join("-") + " " + time.join(":") ;
 
   var new_reminder={
@@ -125,6 +143,7 @@ app.post('/users/:userId/reminders', function (req, res) {
   });
 });
 
+//delete to remove the user and all reminders that go with it
 app.delete('/users/:userId', function (req,res){
   user.remove({_id : req.params.userId}, function (err, user) {
     if (err) {
@@ -136,6 +155,7 @@ app.delete('/users/:userId', function (req,res){
   });
 });
 
+//delete to remove all the reminders from a given user
 app.delete('/users/:userId/reminders', function (req,res){
   user.findById(req.params.userId, function(err, user) {
     if (err) {
@@ -154,6 +174,7 @@ app.delete('/users/:userId/reminders', function (req,res){
   });
 });
 
+//delete to remove one specific reminder at given user and reminder
 app.delete('/users/:userId/reminders/reminderId', function (req,res){
   user.findById(req.params.userId, function(err, user) {
     if (err) {
@@ -173,6 +194,9 @@ app.delete('/users/:userId/reminders/reminderId', function (req,res){
   });
 });
 
+//listen to let user know the app is running on port 3000
 app.listen(3000, function (){
   console.log('User app listening on port 3000');
 });
+
+//end user program
