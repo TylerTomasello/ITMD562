@@ -71,7 +71,7 @@ app.get('/users/:userId', function (req, res) {
 });
 
 app.get('/users/:userId/reminders', function (req, res) {
-  
+
 });
 
 app.get('/users/:userId/reminders/:reminderId', function (req, res) {
@@ -105,7 +105,20 @@ app.post('/users', function (req, res) {
 });
 
 app.post('/users/:userId/reminders', function (req, res) {
-  var timestamp = Math.round((new Date()).getTime() / 1000);
+  var current=new Date();
+  //array of current month, date, and year
+  var date=[current.getMonth() + 1, current.getDate(), current.getFullYear()];
+  //array of current hour, minutes, and seconds
+  var time=[current.getHours(), current.getMinutes(), current.getSeconds()];
+  //if sec and min are less then 10 put a 0 in fron of it
+  for (var i = 1; i < 3; i++) {
+    if (time[i] < 10) {
+      time[i]= "0" + time[i];
+    }
+  }
+  // Return the formatted string
+  var timestamp = date.join("-") + " " + time.join(":") ;
+
   var new_reminder={
     title : req.body.title,
     description : req.body.description,
