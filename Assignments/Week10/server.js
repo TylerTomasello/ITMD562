@@ -71,13 +71,7 @@ app.get('/users/:userId', function (req, res) {
 });
 
 app.get('/users/:userId/reminders', function (req, res) {
-  var userId=req.params.userId;
-  if(!users[userid-1]){
-    res.status(404).send('No user was found with id');
-  }
-  else{
-    res.status(200).send(users[userId-1].reminders);
-  }
+  
 });
 
 app.get('/users/:userId/reminders/:reminderId', function (req, res) {
@@ -112,11 +106,11 @@ app.post('/users', function (req, res) {
 
 app.post('/users/:userId/reminders', function (req, res) {
   var timestamp = Math.round((new Date()).getTime() / 1000);
-  var new_reminder=new reminder({
+  var new_reminder={
     title : req.body.title,
     description : req.body.description,
     created : timestamp
-  });
+  };
 
   user.findById(req.params.userId, function (err, user) {
     if (err) {
