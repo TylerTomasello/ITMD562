@@ -17,9 +17,8 @@ var app = express();
 
 app.use(bodyParser.json());
 
-var mongoUri = 'mongodb://localhost:27017/user';
 //use mongoose to connect to a database
-mongoose.connect(mongoUri, {useMongoClient: true});
+mongoose.connect('mongodb://localhost:27017/user', {useMongoClient: true});
 
 //make schema to input data
 var userSchema = mongoose.Schema({
@@ -52,20 +51,12 @@ app.get('/users/:userId', function (req, res) {
 
 //get to find reminders of a user and display the reminder title and description
 app.get('/users/:userId/reminders', function (req, res) {
-  user.findById(req.params.userId, function(err, user) {
+  user.findById(req.params.userId, 'reminder.title', function(err, user) {
     if (err) {
       res.status(404).send(err);
     }
     else {
-      user.findOne({'_id' : req.params.userId, 'reminder.title' : req.query.title},
-      'reminder.title', function (err, user) {
-        if (err) {
-          res.status(404).send(err);
-        }
-        else {
           res.status(200).send(user.reminder);
-        }
-      });
     }
   });
 });
