@@ -137,6 +137,17 @@ app.post('/users/:userId/reminders', function (req, res) {
   });
 });
 
+app.delete('/users/:userId', function (req,res){
+  user.remove({_id : req.params.userId}, function (err, user) {
+    if (err) {
+      res.status(404).send(err);
+    }
+    else {
+      res.status(204).send(user);
+    }
+  });
+});
+
 app.listen(3000, function (){
   console.log('User app listening on port 3000');
 });
