@@ -17,8 +17,9 @@ var app = express();
 
 app.use(bodyParser.json());
 
+var mongoUri = 'mongodb://localhost:27017/user';
 //use mongoose to connect to a database
-mongoose.connect('mongodb://localhost:27017/user');
+mongoose.connect(mongoUri, {useMongoClient: true,});
 
 //make schema to input data
 var userSchema = mongoose.Schema({
@@ -189,7 +190,7 @@ app.delete('/users/:userId/reminders/reminderId', function (req,res){
         else {
           res.status(204).send({message : 'Reminder deleted'});
         }
-      }
+      });
     }
   });
 });
