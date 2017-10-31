@@ -38,3 +38,15 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.use(bodyParser.json());
+
+app.get('/users/:userId', function (req, res) {
+  hand.findById(req.params.userId).then(function(users){
+    res.status(200).send({
+      'name': users.name,
+      'email': users.email
+    });
+  },
+  function(err){
+    res.status(404).send('No user was found with id');
+  });
+});
