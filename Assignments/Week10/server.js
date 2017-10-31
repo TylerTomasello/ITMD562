@@ -143,7 +143,25 @@ app.delete('/users/:userId', function (req,res){
       res.status(404).send(err);
     }
     else {
-      res.status(204).send(user);
+      res.status(204).send({message : 'User deleted'});
+    }
+  });
+});
+
+app.delete('/users/:userId/reminders', function (req,res){
+  user.findById(req.params.userId, function(err, user) {
+    if (err) {
+      res.status(404).send(err);
+    }
+    else {
+      user.reminder.remove({_id : req.params.userId}, function (err, user) {
+        if (err) {
+          res.status(404).send(err);
+        }
+        else {
+          res.status(204).send({message : 'Reminders deleted'});
+        }
+      });
     }
   });
 });
