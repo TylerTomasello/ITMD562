@@ -110,6 +110,33 @@ app.post('/users', function (req, res) {
   });
 });
 
+app.post('/users/:userId/reminders', function (req, res) {
+  var timestamp = Math.round((new Date()).getTime() / 1000);
+  var new_reminder=new reminder({
+    title : req.body.title,
+    description : req.body.description,
+    created : timestamp
+  });
+
+  user.findById(req.params.userId, function (err, user) {
+    if (err) {
+      res.status(404).send(err);
+    }
+    else {
+      var reminder = user.reminder.create(new_reminder);
+      user.reminder.push(reminder);
+      user.save(function (err, user) {
+        if (err) {
+          res.status(404).send(err);
+        }
+        else {
+          res.status(200).send(reminder);
+        }
+      });
+    }
+  });
+});
+
 app.listen(3000, function (){
   console.log('User app listening on port 3000');
 });
