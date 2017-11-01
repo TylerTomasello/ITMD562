@@ -44,8 +44,8 @@ app.get('/users/:userId/reminders', function (req, res) {
   }
   */
   else {
-    user[userID-1].remind.forEach(function (objt) {
-      reminds.push(objt.reminder);
+    user[userID-1].remind.forEach(function (item) {
+      reminds.push(item.reminder);
     });
     res.status(200).send(reminds);
   }
@@ -57,7 +57,7 @@ app.get('/users/:userId/reminders/:reminderId', function (req, res) {
   var reminderID = req.params.reminderId;
 
   if (!user[userID-1].remind[reminderID-1]){
-    res.status(404).send("Reminder not found for id " + reminderID);
+    res.status(404).send("Reminder not found for id: " + reminderID);
   }
   else {
     res.status(200).send(user[userID-1].remind[reminderID-1].reminder);
@@ -70,6 +70,7 @@ app.post('/users', function (req, res) {
   var users = req.body;
 
   users.id = useid.id;
+
   //declare empty array if reminders will be put in later
   users.remind = [];
   user.push(users);
@@ -79,11 +80,11 @@ app.post('/users', function (req, res) {
 //post to create a new reminder for a user with a title and description.
 //The time is automatically put in
 app.post('/users/:userId/reminders', function (req, res) {
-  var current=new Date();
+  var current = new Date();
   //array of current month, date, and year
-  var date=[current.getMonth() + 1, current.getDate(), current.getFullYear()];
+  var date = [current.getMonth() + 1, current.getDate(), current.getFullYear()];
   //array of current hour, minutes, and seconds
-  var time=[current.getHours(), current.getMinutes(), current.getSeconds()];
+  var time = [current.getHours(), current.getMinutes(), current.getSeconds()];
   //if sec and min are less then 10 put a 0 in fron of it
   for (var i = 1; i < 3; i++) {
     if (time[i] < 10) {
@@ -94,13 +95,13 @@ app.post('/users/:userId/reminders', function (req, res) {
   var timestamp = date.join("-") + " " + time.join(":") ;
 
   var userID = req.params.userId;
+  var remid = {'id' : user[userID-1].remind.length+1};
+  var new_reminder = req.body;
 
   if (!user[userID-1]) {
     res.status(404).send("User not found for id " + userID);
   }
   else {
-    var remid = {'id' : user[userID-1].remind.length+1};
-    var new_reminder = req.body;
     new_reminder.id = remid.id;
     new_reminder.reminder.created = timestamp;
 
@@ -117,7 +118,7 @@ app.delete('/users/:userId', function (req,res){
   }
   else {
     delete user[userID-1];
-    res.status(204).send('204 Nocontent');
+    res.status(204).send('204 No content');
   }
 });
 
@@ -129,7 +130,7 @@ app.delete('/users/:userId/reminders', function (req,res){
   }
   else {
     delete user[userID-1].reminders;
-    res.status(204).send('204 Nocontent');
+    res.status(204).send('204 No content');
   }
 });
 
@@ -141,9 +142,9 @@ app.delete('/users/:userId/reminders/reminderId', function (req,res){
     res.status(404).send("Reimder not found for id " + reminderID);
   }
   else {
-    delete user[userID-1].remind[reminderID-1];
     //user[userID-1].remind.pull(reminderID-1);
-    res.status(204).send('204 Nocontent');
+    delete user[userID-1].remind[reminderID-1];
+    res.status(204).send('204 No content');
   }
 });
 
