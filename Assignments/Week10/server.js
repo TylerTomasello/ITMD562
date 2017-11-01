@@ -38,6 +38,11 @@ app.get('/users/:userId/reminders', function (req, res) {
   if (!user[userID-1]) {
     res.status(404).send("User not found for id: " + userID);
   }
+  /*
+  else if (remind[title=reminders]) {
+    res.status(200).send(reminds[title]);
+  }
+  */
   else {
     user[userID-1].remind.forEach(function (objt) {
       reminds.push(objt.reminder);
