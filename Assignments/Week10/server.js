@@ -22,6 +22,7 @@ var user = [];
 //get to find usersId and displaying name and email
 app.get('/users/:userId', function (req, res) {
   var userID = req.params.userId;
+  
   if (!user[userID-1]){
     res.status(404).send("User not found for id: " + userID);
     }
@@ -113,6 +114,7 @@ app.post('/users/:userId/reminders', function (req, res) {
 //delete to remove the user and all reminders that go with it
 app.delete('/users/:userId', function (req,res){
   var userID = req.params.userId;
+
   if (!user[userID-1]) {
     res.status(404).send("User not found for id: " + userID);
   }
@@ -125,6 +127,7 @@ app.delete('/users/:userId', function (req,res){
 //delete to remove all the reminders from a given user
 app.delete('/users/:userId/reminders', function (req,res){
   var userID = req.params.userId;
+
   if (!user[userID-1]) {
     res.status(404).send("User not found for id: " + userID);
   }
@@ -138,10 +141,12 @@ app.delete('/users/:userId/reminders', function (req,res){
 app.delete('/users/:userId/reminders/reminderId', function (req,res){
   var userID = req.params.userId;
   var reminderID = req.params.reminderId;
+
   if (!user[userID-1].remind[reminderID-1]) {
     res.status(404).send("Reimder not found for id " + reminderID);
   }
   else {
+    //cannot properly delete specific reminder
     //user[userID-1].remind.pull(reminderID-1);
     delete user[userID-1].remind[reminderID-1];
     res.status(204).send('204 No content');
