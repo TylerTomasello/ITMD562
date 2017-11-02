@@ -22,7 +22,7 @@ var user = [];
 //get to find usersId and displaying name and email
 app.get('/users/:userId', function (req, res) {
   var userID = req.params.userId;
-  
+
   if (!user[userID-1]){
     res.status(404).send("User not found for id: " + userID);
     }
@@ -81,6 +81,10 @@ app.post('/users', function (req, res) {
 //post to create a new reminder for a user with a title and description.
 //The time is automatically put in
 app.post('/users/:userId/reminders', function (req, res) {
+  var userID = req.params.userId;
+  var remid = {'id' : user[userID-1].remind.length+1};
+  var new_reminder = req.body;
+  
   var current = new Date();
   //array of current month, date, and year
   var date = [current.getMonth() + 1, current.getDate(), current.getFullYear()];
@@ -94,10 +98,6 @@ app.post('/users/:userId/reminders', function (req, res) {
   }
   //variable for the timestamp to be used
   var timestamp = date.join("-") + " " + time.join(":") ;
-
-  var userID = req.params.userId;
-  var remid = {'id' : user[userID-1].remind.length+1};
-  var new_reminder = req.body;
 
   if (!user[userID-1]) {
     res.status(404).send("User not found for id " + userID);
