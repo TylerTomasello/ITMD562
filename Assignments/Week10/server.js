@@ -84,7 +84,7 @@ app.post('/users/:userId/reminders', function (req, res) {
   var userID = req.params.userId;
   var remid = {'id' : user[userID-1].remind.length+1};
   var new_reminder = req.body;
-  
+
   var current = new Date();
   //array of current month, date, and year
   var date = [current.getMonth() + 1, current.getDate(), current.getFullYear()];
@@ -132,7 +132,7 @@ app.delete('/users/:userId/reminders', function (req,res){
     res.status(404).send("User not found for id: " + userID);
   }
   else {
-    delete user[userID-1].reminders;
+    user[userID-1].pull(reminders);
     res.status(204).send('204 No content');
   }
 });
@@ -147,8 +147,8 @@ app.delete('/users/:userId/reminders/reminderId', function (req,res){
   }
   else {
     //cannot properly delete specific reminder
-    //user[userID-1].remind.pull(reminderID-1);
-    delete user[userID-1].remind[reminderID-1];
+    user[userID-1].remind.pull(reminderID-1);
+    //delete user[userID-1].remind[reminderID-1];
     res.status(204).send('204 No content');
   }
 });
