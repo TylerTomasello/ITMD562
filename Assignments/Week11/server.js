@@ -27,7 +27,7 @@ app.get('/users/:userId', function (req, res) {
     res.status(404).send("User not found for id: " + userID);
     }
   else {
-    res.status(200).send(user[userID-1].user);
+    res.status(200).json(user[userID-1].user);
   }
 });
 
@@ -48,7 +48,7 @@ app.get('/users/:userId/reminders', function (req, res) {
     user[userID-1].remind.forEach(function (item) {
       reminds.push(item.reminder);
     });
-    res.status(200).send(reminds);
+    res.status(200).json(reminds);
   }
 });
 
@@ -61,7 +61,7 @@ app.get('/users/:userId/reminders/:reminderId', function (req, res) {
     res.status(404).send("Reminder not found for id: " + reminderID);
   }
   else {
-    res.status(200).send(user[userID-1].remind[reminderID-1].reminder);
+    res.status(200).json(user[userID-1].remind[reminderID-1].reminder);
   }
 });
 
@@ -75,7 +75,7 @@ app.post('/users', function (req, res) {
   //declare empty array if reminders will be put in later
   users.remind = [];
   user.push(users);
-  res.status(200).send(useid);
+  res.status(200).json(useid);
 });
 
 //post to create a new reminder for a user with a title and description.
@@ -107,7 +107,7 @@ app.post('/users/:userId/reminders', function (req, res) {
     new_reminder.reminder.created = timestamp;
 
     user[userID-1].remind.push(new_reminder);
-    res.status(200).send(id);
+    res.status(200).json(id);
   }
 });
 
@@ -120,7 +120,7 @@ app.delete('/users/:userId', function (req,res){
   }
   else {
     delete user[userID-1];
-    res.status(204).send('204 No content');
+    res.status(204).json('204 No content');
   }
 });
 
@@ -138,7 +138,7 @@ app.delete('/users/:userId/reminders', function (req,res){
 });
 
 //delete to remove one specific reminder at given user and reminder
-app.delete('/users/:userId/reminders/reminderId', function (req,res){
+app.delete('/users/:userId/reminders/:reminderId', function (req,res){
   var userID = req.params.userId;
   var reminderID = req.params.reminderId;
 
@@ -146,7 +146,6 @@ app.delete('/users/:userId/reminders/reminderId', function (req,res){
     res.status(404).send("Reimder not found for id " + reminderID);
   }
   else {
-    //cannot properly delete specific reminder
     user[userID-1].remind.pull(reminderID-1);
     //delete user[userID-1].remind[reminderID-1];
     res.status(204).send('204 No content');
