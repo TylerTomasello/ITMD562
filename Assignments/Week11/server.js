@@ -69,3 +69,93 @@ app.get('/users/:userId/reminders/:reminderId', function (req, res) {
 app.post('/users', function (req, res) {
   var useid = {'id' : user.length+1};
   var users = req.body;
+
+  users.id = useid.id;
+
+  //declare empty array if reminders will be put in later
+  users.remind = [];
+  user.push(users);
+  res.status(200).send(useid);
+});
+
+//post to create a new reminder for a user with a title and description.
+//The time is automatically put in
+app.post('/users/:userId/reminders', function (req, res) {
+  var userID = req.params.userId;
+  var remid = {'id' : user[userID-1].remind.length+1};
+  var new_reminder = req.body;
+
+  var current = new Date();
+  //array of current month, date, and year
+  var date = [current.getMonth() + 1, current.getDate(), current.getFullYear()];
+  //array of current hour, minutes, and seconds
+  var time = [current.getHours(), current.getMinutes(), current.getSeconds()];
+  //if sec and min are less then 10 put a 0 in fron of it
+  for (var i = 1; i < 3; i++) {
+    if (time[i] < 10) {
+      time[i]= "0" + time[i];
+    }
+  }
+  //variable for the timestamp to be used
+  var timestamp = date.join("-") + " " + time.join(":") ;
+
+  if (!user[userID-1]) {
+    res.status(404).send("User not found for id " + userID);
+  }
+  else {
+    new_reminder.id = remid.id;
+    new_reminder.reminder.created = timestamp;
+
+    user[userID-1].remind.push(new_reminder);
+    res.status(200).send(id);
+  }
+});
+
+//delete to remove the user and all reminders that go with it
+app.delete('/users/:userId', function (req,res){
+  var userID = req.params.userId;
+
+  if (!user[userID-1]) {
+    res.status(404).send("User not found for id: " + userID);
+  }
+  else {
+    delete user[userID-1];
+    res.status(204).send('204 No content');
+  }
+});
+
+//delete to remove all the reminders from a given user
+app.delete('/users/:userId/reminders', function (req,res){
+  var userID = req.params.userId;
+
+  if (!user[userID-1]) {
+    res.status(404).send("User not found for id: " + userID);
+  }
+  else {
+    user[userID-1].pull(reminders);
+    res.status(204).send('204 No content');
+  }
+});
+
+//delete to remove one specific reminder at given user and reminder
+app.delete('/users/:userId/reminders/reminderId', function (req,res){
+  var userID = req.params.userId;
+  var reminderID = req.params.reminderId;
+
+  if (!user[userID-1].remind[reminderID-1]) {
+    res.status(404).send("Reimder not found for id " + reminderID);
+  }
+  else {
+    //cannot properly delete specific reminder
+    user[userID-1].remind.pull(reminderID-1);
+    //delete user[userID-1].remind[reminderID-1];
+    res.status(204).send('204 No content');
+  }
+});
+
+//listen to let user know the app is running on port 3000
+app.listen(3000, function (){
+  console.log('User app listening on port 3000');
+});
+
+//end user program
