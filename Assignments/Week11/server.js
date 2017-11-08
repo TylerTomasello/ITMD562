@@ -132,7 +132,7 @@ app.delete('/users/:userId/reminders', function (req,res){
     res.status(404).send("User not found for id: " + userID);
   }
   else {
-    user[userID-1].pull(reminders);
+    user[userID-1].remind = [];
     res.status(204).send('204 No content');
   }
 });
@@ -146,8 +146,8 @@ app.delete('/users/:userId/reminders/:reminderId', function (req,res){
     res.status(404).send("Reimder not found for id " + reminderID);
   }
   else {
-    user[userID-1].remind.pull(reminderID-1);
-    //delete user[userID-1].remind[reminderID-1];
+    //user[userID-1].remind.pull(reminderID-1);
+    delete user[userID-1].remind[reminderID-1];
     res.status(204).send('204 No content');
   }
 });
