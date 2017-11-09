@@ -1,6 +1,6 @@
 /* Tyler Tomasello
 *  server.js
-*  Week 11 assignment-week10
+*  Week 11 assignment-week11
 *  11/7/17
 *
 * Useful links I used for guidence:
@@ -156,5 +156,3 @@ app.delete('/users/:userId/reminders/:reminderId', function (req,res){
 app.listen(3000, function (){
   console.log('User app listening on port 3000');
 });
-
-//end user program

@@ -1,0 +1,115 @@
+<!--
+Tyler Tomasello
+index.html
+Week 11 assignment-week11
+11/7/17
+
+Resources: https://www.w3schools.com/howto/howto_js_tabs.asp
+           https://getbootstrap.com/docs/3.3/javascript/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>User Reminders</title>
+</head>
+
+<body>
+  <header>
+    <h1>User Reminders</h1>
+  </header>
+
+  <main>
+    <nav>
+      <button id="default" class="tablinks" onclick="openCity(event, 'Add')">Add</button>
+      <button class="tablinks" onclick="openCity(event, 'Search')">Search</button>
+      <button class="tablinks" onclick="openCity(event, 'Delete')">Delete</button>
+    </nav>
+
+    <div id="Add" class="tabcontent">
+      <div  id="addUser">
+        <h4>Add a New User: </h4>
+        <p>Name: </p> <input type="text" class="name input" />
+        <p>Email: </p> <input type="text" class="email input" />
+        <button>Add</button>
+      </div>
+
+      <div role="tabpanel" id="addReminder">
+        <h4>Add Reminder: </h4>
+        <p>User Id: </p> <input type="text" class="userid input"/>
+        <p>Title:</p> <input type="text" class="title input" />
+        <p>Description:</p> <input type="text" class="description input"/>
+        <button>Add</button>
+      </div>
+    </div>
+
+    <div id="Search" class="tabcontent">
+      <div id="findUser">
+        <h4>Search User:</h4>
+        <p>User Id: </p> <input type="text" class="userid input"/>
+        <button>Search</button>
+      </div>
+
+      <div id="findReminder">
+        <h4>Search Reminder</h4>
+        <p>User Id:</p> <input type="text" class="userid input" />
+        <p>Reminder Id:</p> <input type="text" class="reminderid input" />
+        <button>Search</button>
+      </div>
+
+      <div id="findReminders">
+        <h4>Search all Reminders: </h4>
+        <p>User Id:</p> <input type="text" class="userid input"/>
+        <button>Search</button>
+      </div>
+    </div>
+
+    <div id="Delete" class="tabcontent">
+      <div id="deleteUser">
+        <h4>Delete User: </h4>
+        <p>User Id:</p> <input type="text" class="userid input" />
+        <button>Delete</button>
+      </div>
+
+      <div id="deleteReminders">
+        <h4>Delete All Reminders: </h4>
+        <p>User Id:</p> <input type="text" class="userid input" />
+        <button>Delete</button>
+      </div>
+
+      <div id="deleteReminder">
+        <h4>Delete Reminder: </h4>
+        <p>User Id:</p> <input type="text" class="userid input" />
+        <p>Reminder Id:</p> <input type="text" class="reminderid input" />
+        <button>Delete</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="display"></div>
+</main>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+document.getElementById("default").click();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="app.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>
