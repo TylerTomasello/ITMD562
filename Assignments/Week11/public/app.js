@@ -1,60 +1,60 @@
-var main = function (items) {
+var main = function (users) {
     "use strict";
 
-    function buildItemEl(item) {
+    function buildUserEl(user) {
         var $viewButton = $("<button>").text("view").on("click", function() {
             $.ajax({
-                url: '/items/' + item.id,
+                url: '/users/' + user.id,
                 type: 'GET',
-                success: function(item) {
-                    alert("Item: " + item.name);
+                success: function(user) {
+                    alert("User: " + user.name);
                 }
             });
         });
         var $deleteButton = $("<button>").text("X").on("click", function() {
             $.ajax({
-                url: '/items/' + item.id,
+                url: '/users/' + user.id,
                 type: 'DELETE',
                 success: function(result) {
-                    $("#item-" + item.id).remove();
+                    $("#user-" + user.id).remove();
                 }
             });
         });
         var $listEl = $("<li>")
-            .attr("id", "item-" + item.id)
-            .text(item.name + " - " + item.quantity)
+            .attr("id", "user-" + user.id)
+            .text(user.name + " - " + user.email)
             .append($viewButton)
             .append($deleteButton);
         return $listEl;
     }
 
-    var $itemList = $("<ul>").attr("id", "items");
-    items.forEach(function(item) {
-        $itemList.append(buildItemEl(item));
+    var $userList = $("<ul>").attr("id", "name");
+    users.forEach(function(user) {
+        $userList.append(buildUserEl(user));
     });
-    $("#itemContainer").html($itemList);
-    $("#addNewItem").on("click", function() {
-        var newName = $("input[name='newItemName']").val();
-        var newQuantity = $("input[name='newItemQuantity']").val();
-        var newItem = {
+    $("#userContainer").html($userList);
+    $("#addNewUser").on("click", function() {
+        var newName = $("input[name='newName']").val();
+        var newEmail = $("input[name='newEmail']").val();
+        var newUser = {
             name: newName,
-            quantity: newQuantity
+            email: newEmail
         }
         $.ajax({
-            url: "/items",
+            url: "/users",
             type: "POST",
-            data: JSON.stringify(newItem),
+            data: JSON.stringify(newUser),
             contentType: "application/json",
-            success: function(newItem, status) {
-                $itemList.append(buildItemEl(newItem));
+            success: function(newUser, status) {
+                $itemList.append(buildUserEl(newUser));
             }
         });
     });
 };
 
 $(document).ready(function () {
-    $.getJSON("/items", function (items) {
-        console.log(items);
-        main(items);
+    $.getJSON("/users", function (users) {
+        console.log(users);
+        main(users);
     });
 });
