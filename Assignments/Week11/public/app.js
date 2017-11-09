@@ -12,7 +12,7 @@ $(document).ready(function() {
     contentType: "application/json; charset=utf-8"
   });
 
-  //POST USER
+  //Add a new user
   $("#addUser button").on("click", function() {
     var $input1 = $(".name");
     var $input2 = $(".email");
@@ -27,13 +27,13 @@ $(document).ready(function() {
     }};
     $.post("/users", JSON.stringify(newUser) , function(req, res){
       var $display = $("<p>");
-      $display.text("User Id: " + req.id);
+      $display.text("Id: " + req.id);
       $(".display").html($display);
 
     }, "json");
   });
 
-  //POST REMINDER
+  //Add a new reminder to a user
   $("#addReminder button").on("click", function() {
     var $input1 = $(".userid");
     var $input2 = $(".title");
@@ -45,30 +45,30 @@ $(document).ready(function() {
     $input2.val("");
     $input3.val("");
 
-    var newRemind  =   {"reminder" : {
+    var newReminder  =   {"reminder" : {
       "title" : $title,
       "description" : $description
     }};
-    $.post("/users/"+ $userid +"/reminders", JSON.stringify(newRemind) , function(req, res){
+    $.post("/users/"+ $userid +"/reminders", JSON.stringify(newReminder) , function(req, res){
       var $display = $("<p>");
-      $display.text("New reminderID: " + req.id);
+      $display.text("Id: " + req.id);
       $(".display").html($display);
     });
   });
 
-  //Get specific user
+  //Find a user by entering userid
   $("#findUser button").on("click", function() {
     var $input1 = $(".userid");
     var $userid = $input1.val();
     $input1.val("");
     $.get("/users/" + $userid, function(data){
       var $display = $("<p>");
-      $display.text("Username: " + data.name + " Email: " + data.email);
+      $display.text("Name: " + data.name + " Email: " + data.email);
       $(".display").html($display);
     });
   });
 
-  //GET REMINDER
+  //Find a specific reminder by entering userid and reminderid
   $("#findReminder button").on("click", function() {
     var $input1 = $(".userid");
     var $input2 = $(".reminderid");
@@ -83,7 +83,7 @@ $(document).ready(function() {
     });
   });
 
-  //GET ALL USER REMINDERS
+  //Find and display all reminders for a user
   $("#findReminders button").on("click", function() {
     var $input1 = $(".userid");
     var $userid = $input1.val();
@@ -97,7 +97,7 @@ $(document).ready(function() {
     });
   });
 
-  //DELETE USER
+  //Delete a user
   $("#deleteUser button").on("click", function() {
     var $input1 = $(".userid");
     var $userid = $input1.val();
@@ -110,13 +110,13 @@ $(document).ready(function() {
       contentType: "application/json",
       success: function(req) {
         var $display = $("<p>");
-        $display.text("userId: " + $userid + " has been deleted");
+        $display.text("User has been deleted");
         $(".display").html($display);
       }
     });
   });
 
-  //DELETE ALL USER REMINDERS
+  //Delete all reminders from a user
   $("#deleteReminders button").on("click", function() {
     var $input1 = $(".userid");
     var $userid = $input1.val();
@@ -129,13 +129,13 @@ $(document).ready(function() {
       contentType: "application/json",
       success: function(req) {
         var $display = $("<p>");
-        $display.text("All reminders have been deleted for user Id: " + $userid);
+        $display.text("All reminders have been deleted.");
         $(".display").html($display);
       }
     });
   });
 
-  //DELETE SINGLE REMINDER
+  //Delete a reminder from a user
   $("#deleteReminder button").on("click", function() {
     var $input1 = $(".userid");
     var $input2 = $(".reminderid");
@@ -151,7 +151,7 @@ $(document).ready(function() {
       contentType: "application/json",
       success: function(req) {
         var $display = $("<p>");
-        $display.text("Reminder Id: " + $reminderid + " has been deleted");
+        $display.text("Reminder has been deleted");
         $(".display").html($display);
       }
     });
