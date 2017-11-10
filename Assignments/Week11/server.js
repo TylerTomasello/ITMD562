@@ -16,6 +16,15 @@ var app = express();
 
 app.use(bodyParser.json());
 
+//allow for use local files, with indesx.html, and rest commands
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers",
+  "Origin, X-Requested-With,  X-HTTP-Method-Override, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+  next();
+});
+
 //declare starting array to use for information
 var user = [];
 
