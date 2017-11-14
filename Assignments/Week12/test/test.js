@@ -1,5 +1,12 @@
+/* Tyler Tomasello
+*  test.js
+*  Week 12 assignment8
+*  11/14/17
+*
+*/
 process.env.NODE_ENV = 'test';
 
+//requirements to run the test file
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');
@@ -7,31 +14,32 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Reminders', () => {
+//Call to test the server.js REST commands
+describe('Users', () => {
 
+  //test first field to POST a new user
   describe('/POST user', () => {
-    it('it should POST a new user', (done) => {
-      let newuser =
+    it('It should POST a new user', (done) => {
+      let newUser =
       {'user' : {
-        "name" : "John",
-        "email" : "jstudent@example.com"
+        "name" : "Jane Doe",
+        "email" : "jdoe@example.com"
       }}
       chai.request(server)
       .post('/users')
-      .send(newuser)
+      .send(newUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
-        //res.body.should.have.property('errors');
-        // res.body.errors.should.have.property('pages');
         res.body.should.have.property('id');
         done();
       });
     });
   });
 
+  //test the GET to show a specific user
   describe('/GET/:userid ', () => {
-    it('it should GET a user by the given id', (done) => {
+    it('It should GET a specific user by the given id', (done) => {
       let userId = 1;
       chai.request(server)
       .get('/users/' + userId)
@@ -40,35 +48,33 @@ describe('Reminders', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('name');
         res.body.should.have.property('email');
-        //res.body.should.have.property('id').eql(userId);
         done();
       });
     });
-    it('it should not GET a user if there is no user at that id', (done) => {
+    it('It should not GET a user if there is no user at that id', (done) => {
       let userId = 2;
       chai.request(server)
       .get('/users/' + userId)
       .end((err, res) => {
         res.should.have.status(404);
         res.body.should.be.a('object');
-        // res.body.should.have.property('name');
-        // res.body.should.have.property('email');
         res.body.should.have.property('message').eql("User not found for id: " + userId);
         done();
       });
     });
   });
 
+  //test to POST a new reminder
   describe('/POST reminder', () => {
-    let newremind  =   {"reminder" : {
-      "title" : "Go to Store",
-      "description" : "Get all the meats"
+    let newReminder  =   {"reminder" : {
+      "title" : "Final Project",
+      "description" : "Due the last week of finals."
     }}
-    it('it should POST a new reminder to user id', (done) => {
+    it('It should POST a new reminder to a user id', (done) => {
       let userId = 1;
       chai.request(server)
       .post('/users/' + userId + '/reminders')
-      .send(newremind)
+      .send(newReminder)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
@@ -80,7 +86,7 @@ describe('Reminders', () => {
       let userId = 2;
       chai.request(server)
       .post('/users/' + userId + '/reminders')
-      .send(newremind)
+      .send(newReminder)
       .end((err, res) => {
         res.should.have.status(404);
         res.body.should.be.a('object');
@@ -90,8 +96,9 @@ describe('Reminders', () => {
     });
   });
 
+  //test to GET all reminders of a specific user
   describe('/GET/ reminders', () => {
-    it('it should GET all reminders by the given user id', (done) => {
+    it('It should GET all reminders of the given user id', (done) => {
       let userId = 1;
       chai.request(server)
       .get('/users/' + userId + '/reminders')
@@ -101,7 +108,7 @@ describe('Reminders', () => {
         done();
       });
     });
-    it('it should not GET reminders if there is no user at that id', (done) => {
+    it('It should not GET reminders if no user at that id', (done) => {
       let userId = 2;
       chai.request(server)
       .get('/users/' + userId + '/reminders')
@@ -114,8 +121,9 @@ describe('Reminders', () => {
     });
   });
 
+  //test to GET a reminder by both user and reminder id
   describe('/GET/:userId/reminders/:reminderId users', () => {
-    it('it should GET a reminder by the given reminder id and user id', (done) => {
+    it('It should GET a reminder of the given user id and reminder id', (done) => {
       let userId = 1;
       let reminderId = 1;
       chai.request(server)
@@ -128,7 +136,7 @@ describe('Reminders', () => {
         done();
       });
     });
-    it('it should not GET reminder if there is no reminder at that id', (done) => {
+    it('It should not GET reminder if no reminder at that id', (done) => {
       let userId = 1;
       let reminderId = 2;
       chai.request(server)
@@ -142,8 +150,9 @@ describe('Reminders', () => {
     });
   });
 
+  //test to DELETE a reminder by both user and reminder id
   describe('/DELETE/:userId/reminders/:reminderId', () => {
-    it('it should DELETE a reminder given a user and reminder id', (done) => {
+    it('It should DELETE a reminder of a given user id and reminder id', (done) => {
       let userId = 1;
       let reminderId = 1;
       chai.request(server)
@@ -155,7 +164,7 @@ describe('Reminders', () => {
         done();
       });
     });
-    it('it should not DELETE reminder if no reminder has that id', (done) => {
+    it('It should not DELETE reminder if no reminder has that id', (done) => {
       let userId = 1;
       let reminderId = 3;
       chai.request(server)
@@ -169,8 +178,9 @@ describe('Reminders', () => {
     });
   });
 
+  //test to DELETE all reminders of a specific user
   describe('/DELETE/:userId/reminders', () => {
-    it('it should DELETE all reminders given a user id', (done) => {
+    it('It should DELETE all reminders of a given user id', (done) => {
       let userId = 1;
       chai.request(server)
       .delete('/users/' + userId + '/reminders')
@@ -181,7 +191,7 @@ describe('Reminders', () => {
         done();
       });
     });
-    it('it should not DELETE reminders if no user has that id', (done) => {
+    it('It should not DELETE reminders if no user has that id', (done) => {
       let userId = 2;
       chai.request(server)
       .delete('/users/' + userId + '/reminders')
@@ -194,8 +204,9 @@ describe('Reminders', () => {
     });
   });
 
+  //test to DELETE a user id with all reminders
   describe('/DELETE/:userId', () => {
-    it('it should DELETE a user given the id', (done) => {
+    it('It should DELETE a user of given user id', (done) => {
       let userId = 1;
       chai.request(server)
       .delete('/users/' + userId)
@@ -206,7 +217,7 @@ describe('Reminders', () => {
         done();
       });
     });
-    it('it should not DELETE a user if no user has that id', (done) => {
+    it('It should not DELETE a user if no user has that id', (done) => {
       let userId = 1;
       chai.request(server)
       .delete('/users/' + userId)

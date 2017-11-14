@@ -1,6 +1,6 @@
 /* Tyler Tomasello
 *  server.js
-*  Week 11 assignment-week11
+*  Week 12 assignment8
 *  11/14/17
 *
 * Useful links I used for guidence:
@@ -10,6 +10,7 @@
 
 //required items to run properly
 var express = require('express');
+var http = require('http');
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -27,11 +28,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,  X-HTTP-Method-Override, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
   next();
-});
-
-//listen to let user know the app is running on port 3000
-app.listen(3000, function (){
-  console.log('User app listening on port 3000');
 });
 
 //get to find usersId and displaying name and email
@@ -181,6 +177,11 @@ app.delete('/users/:userId/reminders/:reminderId', function (req,res){
     res.status(204);
     res.send('204 No content');
   }
+});
+
+//listen to let user know the app is running on port 3000
+app.listen(3000, function (){
+  console.log('User app listening on port 3000');
 });
 
 module.exports = app;
