@@ -143,7 +143,7 @@ app.delete('/users/:userId', function (req,res){
   else {
     delete user[userID - 1];
     res.status(204);
-    res.send('204 No content');
+    res.send("204 No content");
   }
 });
 
@@ -158,7 +158,7 @@ app.delete('/users/:userId/reminders', function (req,res){
   else {
     user[userID-1].remind = [];
     res.status(204);
-    res.send('204 No content');
+    res.send("204 No content");
   }
 });
 
@@ -175,7 +175,7 @@ app.delete('/users/:userId/reminders/:reminderId', function (req,res){
     //user[userID-1].remind.pull(reminderID-1);
     delete user[userID-1].remind[reminderID-1];
     res.status(204);
-    res.send('204 No content');
+    res.send("204 No content");
   }
 });
 
