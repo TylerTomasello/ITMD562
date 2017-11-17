@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 //use mongoose to connect to a database
-mongoose.connect('mongodb://localhost:27017/poker', { useMongoClient: true });
+mongoose.connect('mongodb://localhost/poker', { useMongoClient: true });
 
 /*var hand = [{"id": "01", "cards": [{"suit": "spades", "rank": "a"},
                                   {"suit": "spades", "rank": "10"},
@@ -57,14 +57,20 @@ app.get('/hands/:handId/cards', function (req, res) {
 
 //post to add a new array of 5 cards
 app.post('/hands', function (req, res){
-  var hand = new hand();
-  hand.cards = req.body;
-  hand.save().then(function (doc){
-    res.stuatus(200).json({'id': doc._id});
-  },
-  function(err){
-    res.send(err);
-  });
+  var newhand = new hand({"id":req.body.id, "cards": [req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards,
+                                                      req.body.cards]});
+  newhand.save(function (err, result){
+    if (err !== null){
+      console.log(err);
+      res.send("ERROR");
+    }
+    else{
+      res.status(200).send(result);
+    }
+  })
 });
 
 //put to update an existing array or cards
