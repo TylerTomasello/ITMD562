@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 //use mongoose to connect to a database
-mongoose.connect('mongodb://localhost/poker', { useMongoClient: true });
+mongoose.connect('mongodb://localhost', { useMongoClient: true });
 
 /*var hand = [{"id": "01", "cards": [{"suit": "spades", "rank": "a"},
                                   {"suit": "spades", "rank": "10"},
