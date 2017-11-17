@@ -12,6 +12,8 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
+mongoose.Promise = global.Promise;
+
 //use mongoose to connect to a database
 mongoose.connect('mongodb://localhost', { useMongoClient: true });
 
@@ -23,54 +25,47 @@ mongoose.connect('mongodb://localhost', { useMongoClient: true });
 
 //make schema to input data
 var handSchema = mongoose.Schema({
-  handId: String,
-  cards: String
+  cards: {
+    type: []
+  }
 });
 
 var hand = mongoose.model("hand", handSchema);
 
 //get to find hands and print hand id and array of cards
 app.get('/hands/:handId', function (req, res) {
-  hand.find({"handId":req.body.id}, function(err, hands){
-    if (err !== null){
-      res.status(404).send('No hand was found with id: '+ hand);
-    }
-    else{
-      res.status(200).json(hands);
-      res.send(hands);
-    }
-  })
+  hand.findById(req.params.handId).then(function(hand){
+    res.send({
+      'id':hand._id,
+      'cards': hand.cards
+    });
+  }, function(err){
+  res.status(404).send(err);
+  }
 });
 
 //get to find cards and just display the array
 app.get('/hands/:handId/cards', function (req, res) {
-  hand.find({"handId": req.body.id}, 'cards':[]), function(err, cards){
-    if (err !== null){
-      res.status(404);
-    }
-    else{
-      res.status(200).send(cards);
-    }
-  })
-  //res.status(200).send(hand);
+  hand.findById({_id: req.params.handId}, 'cards').then(function(hand){
+    res.send(hand.cards);
+  }, function(err){
+  res.status(404).send(err);
+  }
 });
 
 //post to add a new array of 5 cards
 app.post('/hands', function (req, res){
-  var newhand = new hand({"id":req.body.id, "cards": [req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards,
-                                                      req.body.cards]});
-  newhand.save(function (err, result){
-    if (err !== null){
-      console.log(err);
-      res.send("ERROR");
-    }
-    else{
-      res.status(200).send(result);
-    }
-  })
+  var hand = new hand();
+  hand.cards = req.body;
+
+  hand.save().then(function (doc){
+    res.status(200);
+    res.json({
+      'id': doc._id
+    })
+  }, function (err){
+    res.send(err);
+  });
 });
 
 //put to update an existing array or cards
