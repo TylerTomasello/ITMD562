@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 //allow for use local files, with indesx.html, and rest commands
 app.use(function(req, res, next) {
@@ -27,6 +28,8 @@ app.use(function(req, res, next) {
 
 //declare starting array to use for information
 var user = [];
+
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public', 'index.html')))
 
 //get to find usersId and displaying name and email
 app.get('/users/:userId', function (req, res) {
