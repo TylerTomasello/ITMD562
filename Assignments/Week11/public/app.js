@@ -12,150 +12,193 @@ $(document).ready(function() {
     contentType: "application/json; charset=utf-8"
   });
 
-  //Add a new user
-  $("#addUserBtn").on("click", function() {
-    var newName = $("#nameInput").val();
-    var newEmail = $("#emailInput").val();
-
-    var user =   {'user' : {
-      name : newName,
-      email : newEmail
-    }};
-
-    console.log(user);
-    $.ajax({
-      url: "http://localhost:3000/users/",
-      type: "POST",
-      data: JSON.stringify(newUser),
-      contentType: "application/json",
-      success: function(res, status) {
-        var $result = $("<p>");
-        $result.text("Id: " + res.userId + " Name: " + user.user.name +
-        " Email: " + user.user.email);
-        $("#userContainer").html($result);
-      }
+  var viewusers = function () {
+    $.get("http://localhost:3000/users", function(data, status){
+      var $display = $("<p>");
+      $display.text(JSON.stringify(data));
+      $(".display").html($display);
     });
-  });
+  }
+
+  //Add a new user
+  var adduser = function ($name, $email) {
+    var newUser =   {'user' : {
+      "name" : $name,
+      "email" : $email
+    }};
+    $.post("http://localhost:3000/users", JSON.stringify(newUser),
+    function(req, res){
+      var $display = $("<p>");
+      $display.text("New User Id: " + req.id);
+      $(".display").html($display);
+    }, "json");
+  }
 
   //Add a new reminder to a user
-  $("#addReminBtn").on("click", function() {
-    var userId = $("#addReminUserInput").val();
-    var newTitle = $("#titInput").val();
-    var newDescription = $("#descInput").val();
-
-    var newReminder  =   {"reminder" : {
-      "title" : newTitle,
-      "description" : newDescription
+  var addreminder = function ($title, $des, $id) {
+    var newRemind  =   {"reminder" : {
+      "title" : $title,
+      "description" : $des
     }};
-
-    $.ajax({
-      url: "http://localhost:3000//users/" + userId + "/reminders",
-      type: "POST",
-      data: JSON.stringify(newReminder),
-      contentType: "application/json",
-      success: function(res, status) {
-        var $result = $("<p>");
-        $result.text("Id: " + res.reminderId + " Title: " + res.reminder.title +
-        " Description: " + res.reminder.description);
-        $("#reminContainer").html($result);
-      }
+    $.post("http://localhost:3000/users/"+ $id +"/reminders", JSON.stringify(newRemind),
+    function(req, res){
+      var $display = $("<p>");
+      $display.text("New Reminder Id: " + req.id);
+      $(".display").html($display);
     });
-  });
+  }
 
   //Find a user by entering userid
-  $("#getUserBtn").on("click", function() {
-    var userId = $("#userIdInput").val();
-
-    $.ajax({
-      url: "http://localhost:3000//users/" + userId,
-      type: "GET",
-      success: function(getUSer, status) {
-        var $result = $("<p>");
-        $result.text("Name: " + getUser.name + " Email: " + getUSer.email);
-        $("searchedUser").html($result);
-      }
+  var searchuser = function ($id) {
+    $.get("http://localhost:3000/users/" + $id, function(info, status){
+      var $display = $("<p>");
+      $display.text("Username: " + info.name + " Email: " + info.email);
+      $(".display").html($display);
     });
-  });
+  }
 
   //Find a specific reminder by entering userid and reminderid
-  $("#getReminderBtn").on("click", function() {
-    var userId = $("#getReminUserIdInput").val();
-    var reminderId = $("#getReminIdInput").val();
-
-    $.ajax({
-      url: "http://localhost:3000//users/" + userId + "/reminders" + reminderId,
-      type: "GET",
-      success: function(res, status) {
-        var $result = $("<p>");
-        $result.text("Title: " + res.title + " Description: " + res.description +
-        " Created: " + res.created);
-        $("#searchedReminder").html($result);
-      }
+  var searchreminder = function ($iduser, $idrem) {
+    $.get("http://localhost:3000/users/" + $iduser + "/reminders/" + $idrem, function(info, status){
+      var $display = $("<p>");
+      $display.text("Title: " + info.title + " Description: " + info.description + " Created: " + info.created);
+      $(".display").html($display);
     });
-  });
+  }
 
   //Find and display all reminders for a user
-  $("#getAllBtn").on("click", function() {
-    var userId = $("#getAllReminUserInput").val();
-
-    $.ajax({
-      url: "http://localhost:3000//users/" + userId + "/reminders",
-      type: "GET",
-      success: function(res, status) {
-        $("#allContainer").empty();
-        res.forEach(function (reminders){
-          var $result = $("<p>");
-          $result.text("Title: " + reminders.title + " Description: " + reminders.description +
-          " Created: " + reminders.created);
-          $("#allContainer").append($result);
-        });
-      }
+  var viewreminders = function ($id) {
+    $.get("http://localhost:3000/users/" + $id + "/reminders", function(info, status){
+      info.forEach(function (each) {
+        var $display = $("<li>");
+        $display.text("Title: " + each.title + " Description: " + each.description + " Created: " + each.created)
+        $(".display").append($display);
+      });
     });
-  });
+  }
 
   //Delete a user
-  $("#delUserBtn").on("click", function() {
-    var userId = $("delUserIdInput").val();
-
+  var deleteuser = function ($iduser) {
     $.ajax({
-      url: "http://localhost:3000//users/" + userId,
-      type: "DELETE",
-      success: function(status) {
-        var $result = $("<p>");
-        $result.text("User has been deleted");
-        $("#deletedUser").html($result);
+      url: "http://localhost:3000/users/" + $iduser,
+      type: 'DELETE',
+      data: "{}",
+      contentType: "json",
+      success: function(req) {
+        var $display = $("<p>");
+        $display.text("User Id: " + $iduser + " is deleted");
+        $(".display").html($display);
       }
     });
-  });
+  }
 
   //Delete all reminders from a user
-  $("#delAllReminderBtn").on("click", function() {
-    var userId = $("#delAllReminUserIdInput").val();
-
+  var deletereminders = function ($iduser) {
     $.ajax({
-      url: "http://localhost:3000//users/" + userId + "/reminders",
-      type: "DELETE",
-      success: function(res, status) {
-        var $result = $("<p>");
-        $result.text("All reminders have been deleted.");
-        $("#deleteAll").html($result);
+      url: "http://localhost:3000/users/" + $iduser + "/reminders",
+      type: 'DELETE',
+      data: "{}",
+      contentType: "json",
+      success: function(req) {
+        var $display = $("<p>");
+        $display.text("All reminders have been deleted for User Id: " + $iduser);
+        $(".display").html($display);
       }
     });
-  });
+  }
 
   //Delete a reminder from a user
-  $("#delReminderBtn").on("click", function() {
-    var userId = $("#delReminUserIdInput").val();
-    var reminnderId = $("#delReminIdInput").val();
-
+  var deletereminder = function ($iduser, $idrem) {
     $.ajax({
-      url: "http://localhost:3000//users/" + userId + "/reminders/" + reminderId,
-      type: "DELETE",
-      success: function(res, status) {
-        var $result = $("<p>");
-        $result.text("Reminder has been deleted");
-        $("#delRemOutput").html($result);
+      url: "http://localhost:3000/users/" + $iduser + "/reminders/" + $idrem,
+      type: 'DELETE',
+      data: "{}",
+      contentType: "json",
+      success: function(req) {
+        var $display = $("<p>");
+        $display.text("Reminder Id: " + $idrem + " has been deleted");
+        $(".display").html($display);
       }
     });
+  }
+
+  $(".clear").on("click", function() {
+    $(".display").html("");
+    $(".input").val("");
+  });
+
+  $("#viewusers button").on("click", function() {
+    viewusers();
+  });
+
+  $("#searchuser button").on("click", function() {
+    var $field1 = $(".searchuser");
+    var $id = $field1.val();
+    $field1.val("");
+    searchuser($id);
+  });
+
+  $("#adduser button").on("click", function() {
+    var $field1 = $(".addname");
+    var $field2 = $(".addemail");
+    var $name = $field1.val();
+    var $email = $field2.val();
+    $field1.val("");
+    $field2.val("");
+    adduser($name, $email);
+  });
+
+  $("#viewreminders button").on("click", function() {
+    var $field1 = $(".viewreminder");
+    var $id = $field1.val();
+    $field1.val("");
+    viewreminders($id);
+  });
+
+  $("#addreminder button").on("click", function() {
+    var $field1 = $(".addtitle");
+    var $field2 = $(".adddes");
+    var $field3 = $(".userid");
+    var $title = $field1.val();
+    var $des = $field2.val();
+    var $id = $field3.val();
+    $field1.val("");
+    $field2.val("");
+    $field3.val("");
+    addreminder($title, $des, $id);
+  });
+
+  $("#searchreminder button").on("click", function() {
+    var $field1 = $(".search");
+    var $field2 = $(".searchrem");
+    var $iduser = $field1.val();
+    var $idrem = $field2.val();
+    $field1.val("");
+    $field2.val("");
+    searchreminder($iduser, $idrem);
+  });
+
+  $("#deletereminder button").on("click", function() {
+    var $field1 = $(".deluser");
+    var $field2 = $(".delremid");
+    var $iduser = $field1.val();
+    var $idrem = $field2.val();
+    $field1.val("");
+    $field2.val("");
+    deletereminder($iduser, $idrem);
+  });
+
+  $("#deleteuser button").on("click", function() {
+    var $field1 = $(".deluserid");
+    var $iduser = $field1.val();
+    $field1.val("");
+    deleteuser($iduser);
+  });
+
+  $("#deleteall button").on("click", function() {
+    var $field1 = $(".delall");
+    var $iduser = $field1.val();
+    $field1.val("");
+    deletereminders($iduser);
   });
 });

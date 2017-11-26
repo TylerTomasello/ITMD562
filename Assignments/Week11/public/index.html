@@ -13,117 +13,70 @@ Resources: https://www.w3schools.com/howto/howto_js_tabs.asp
   <title>Reminder Application</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-  <style>
-    body { padding:40px 80px 40px 80px; }
-  </style>
 </head>
 
 <body>
-  <div class="starter-template">
-	  <h1>User Reminder</h1>
-  </div>
+  <header class="container-fluid">
+	  <h1>User Reminders</h1>
+  </header>
 
-  <div class="container">
-	  <span class="label label-primary">Add User:</span>
-  </div>
+  <main>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active clear">|<a href="#adduser" aria-controls="adduser" role="tab" data-toggle="tab" class="clear">Add User</a>|</li>
+      <li><a href="#searchuser" aria-controls="searchuser" role="tab" data-toggle="tab" class="clear">Search User</a>|</li>
+      <li><a href="#deleteuser" aria-controls="deleteuser" role="tab" data-toggle="tab" class="clear">Delete User</a>|</li>
+      <li><a href="#addreminder" aria-controls="addreminder" role="tab" data-toggle="tab" class="clear">Add Reminder</a>|</li>
+      <li><a href="#viewreminders" aria-controls="viewreminders" role="tab" data-toggle="tab" class="clear">View Reminders</a>|</li>
+      <li><a href="#searchreminder" aria-controls="searchreminder" role="tab" data-toggle="tab" class="clear">Search Reminder</a>|</li>
+      <li><a href="#deletereminder" aria-controls="deletereminder" role="tab" data-toggle="tab" class="clear">Delete Reminder</a>|</li>
+      <li><a href="#deleteall" aria-controls="deleteall" role="tab" data-toggle="tab"  class="clear">Delete All Reminders</a>|</li>
+    </ul>
 
-  <div class="form-inline container" id="addUser">
-      <label class="sr-only" for="inlineFormInput">Name</label>
-  	  <input type="text" id="nameInput" placeholder="John Doe" name='name'>
-  	  <label class="sr-only" for="inlineFormInput">Email</label>
-  	  <input type="text" id="emailInput" placeholder="jdoe@example.com" name="email">
-      <button id="addUserBtn">Add</button>
-  </div>
-  <div id="userContainer"></div>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="adduser">
+        Name:<input type="text" placeholder="Jane Doe" class="addname input"/>
+        Email:<input type="text" placeholder="jdoe@example.com" class="addemail input"/>
+        <button>Add User</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="searchuser">
+        User Id:<input type="text" placeholder="1" class="searchuser input"/>
+        <button>Search</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="deleteuser">
+        User Id:<input type="text" placeholder="1" class="deluserid input"/>
+        <button>Delete</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="addreminder">
+        Title:<input type="text" placeholder="Do homework" class="addtitle input"/>
+        Description:<input type="text" placeholder="Start with math" class="adddes input"/>
+        User Id:<input type="text" placeholder="1" class="userid input"/>
+        <button>Add</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="viewreminders">
+        User Id:<input type="text" placeholder="1" class="viewreminder input"/>
+        <button>View</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="searchreminder">
+        User Id:<input type="text" placeholder="1" class="search input" />
+        Reminder Id:<input type="text" placeholder="3" class="searchrem input"/>
+        <button>Search</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="deletereminder">
+        User Id:<input type="text" placeholder="1" class="deluser input" />
+        Reminder Id:<input type="text" placeholder="3" class="delremid input"/>
+        <button>Delete</button>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="deleteall">
+        User Id:<input type="text" placeholder="1" class="delall input"/>
+        <button>Delete</button>
+      </div>
+    </div>
+    <div class="display"></div>
+  </main>
 
-  <div class="container">
-    <span class="label label-primary">Search User:</span>
-  </div>
-
-  <div class="form-inline container" id="getUser">
-      <label class="sr-only" for="inlineFormInput">UserId</label>
-      <input type="text" id="userIdInput" placeholder="User Id" name="getUserId">
-      <button type="submit" id="getUserBtn">Search</button>
-  </div>
-  <div id="searchedUser"></div>
-
-  <div class="container">
-    <span class="label label-primary">Delete User:</span>
-  </div>
-
-  <div class="form-inline container" id="deleteUser">
-    <label class="sr-only" for="inlineFormInput">UserId</label>
-    <input type="text" id="delUserIdInput" placeholder="User Id" name="delUserId">
-    <button type="submit" id="delUserBtn">Delete</button>
-  </div>
-  <div id="deletedUser"></div>
-
-  <div class="container">
-    <span class="label label-primary">Add Reminder:</span>
-  </div>
-
-  <div class="form-inline container" id="addReminder">
-      <label class="sr-only" for="inlineFormInput">UserId</label>
-      <input type="text" id="addReminUserInput" placeholder="User Id" >
-      <label class="sr-only" for="inlineFormInput">Title</label>
-      <input type="text" id="titInput" placeholder="Title" >
-      <label class="sr-only" for="inlineFormInput">Description</label>
-      <input type="text" id="descInput" placeholder="Description" >
-      <button id="addReminBtn">Add</button>
-  </div>
-  <div id="reminContainer"></div>
-
-  <div class="container">
-    <span class="label label-primary">Get All Reminders:</span>
-  </div>
-
-  <div class="form-inline container" id="getAllReminders">
-      <label class="sr-only" for="inlineFormInput">UserId</label>
-      <input type="text" id="getAllReminUserInput" placeholder="User Id" >
-      <button id="getAllBtn">Search</button>
-  </div>
-  <div id="allContainer"></div>
-
-  <div class="container">
-    <span class="label label-primary">Search Reminder:</span>
-  </div>
-
-  <div class="form-inline container" id="getUser">
-      <label class="sr-only" for="inlineFormInput">UserId</label>
-      <input type="text" id="getReminUserIdInput" placeholder="User Id" >
-      <label class="sr-only" for="inlineFormInput">ReminderId</label>
-      <input type="text" id="getReminIdInput" placeholder="Reminder Id" >
-      <button type="submit" id="getReminderBtn">Search</button>
-  </div>
-  <div id="searchedReminder"></div>
-
-  <div class="container">
-    <span class="label label-primary">Delete Reminder:</span>
-  </div>
-
-  <div class="form-inline container" id="deleteReminder">
-    <label class="sr-only" for="inlineFormInput">UserId</label>
-    <input type="text" id="delReminUserIdInput" placeholder="User Id" >
-    <label class="sr-only" for="inlineFormInput">ReminderId</label>
-    <input type="text" id="delReminIdInput" placeholder="Reminder Id" >
-    <button type="submit" id="delReminderBtn">Delete</button>
-  </div>
-  <div id="deletedReminder"></div>
-
-  <div class="container">
-    <span class="label label-primary">Delete All Reminders:</span>
-  </div>
-
-  <div class="form-inline container" id="deleteAllReminders">
-    <label class="sr-only" for="inlineFormInput">UserId</label>
-    <input type="text" id="delAllReminUserIdInput" placeholder="User Id" >
-    <button type="submit" id="delAllReminderBtn">Delete</button>
-  </div>
-  <div id="deletedAll"></div>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js "></script>
-<script src="app.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js "></script>
+  <script src="app.js"></script>
 </body>
 </html>
