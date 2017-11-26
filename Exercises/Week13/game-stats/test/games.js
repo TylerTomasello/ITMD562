@@ -90,20 +90,100 @@ describe('Games', () => {
 	});
 	describe('/GET games/:id', () => {
 		it('it should get a specific game', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
-		})
+			var expectedGame = new Game({
+				sport:    "football",
+				start:    Date.now(),
+				end:      Date.now(),
+				homeTeam: {
+							name: "Chicago Bears",
+							score: 0,
+							roster: []
+						  },
+				awayTeam: {
+							name: "Dallas Cowboys",
+							score: 10,
+							roster: []
+						  },
+				result:   "Dallas Cowboys wins"
+			});
+			expectedGame.save();
+			chai.request(app)
+				.get('/games/' + expectedGame.id)
+				.end((err, res) => {
+					res.should.have.status(200);
+					res.body.should.be.a('object');
+					res.body.sport.should.be.eql(expectedGame.sport);
+					res.bosy.result.should.be.eql(expectedGame.result);
+					done();
+				});
+			});
+		});
 	});
 	describe('/PUT games/:id', () => {
 		it('it should update a specific game', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
+			var expectedGame = new Game({
+				sport:    "football",
+				start:    Date.now(),
+				end:      Date.now(),
+				homeTeam: {
+							name: "Chicago Bears",
+							score: 0,
+							roster: []
+						  },
+				awayTeam: {
+							name: "Dallas Cowboys",
+							score: 10,
+							roster: []
+						  },
+				result:   "Dallas Cowboys wins"
+			});
+			expectedGame.save();
+			var updatedGame = expectedGame;
+			updatedGame.sport = "soccer;"
+			chai.request(app)
+				.put('/games')
+				.send(updatedGame)
+				.end((err, res) => {
+					res.should.have.status(200);
+					res.body.message.should.eql("Game successfully updated!");
+					Game.find({sport: updatedGame.sport}).exec((err, games) => {
+						games.length.should.be.eql(1);
+						done();
+				    });
+				});
 		})
 	});
 	describe('/DELETE games/:id', () => {
 		it('it should delete a specific game', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
+			var expectedGame = new Game({
+				sport:    "football",
+				start:    Date.now(),
+				end:      Date.now(),
+				homeTeam: {
+							name: "Chicago Bears",
+							score: 0,
+							roster: []
+						  },
+				awayTeam: {
+							name: "Dallas Cowboys",
+							score: 10,
+							roster: []
+						  },
+				result:   "Dallas Cowboys wins"
+			});
+			expectedGame.save();
+			chai.request(app)
+				.put('/games' + expectedGame.id)
+				.send(updatedGame)
+				.end((err, res) => {
+					res.should.have.status(204);
+					res.body.message.should.eql("Game successfully updated!");
+					Game.find({sport: updatedGame.sport}).exec((err, games) => {
+						games.length.should.be.eql(1);
+						done();
+				    });
+				});
+			})
 		})
 	});
 });

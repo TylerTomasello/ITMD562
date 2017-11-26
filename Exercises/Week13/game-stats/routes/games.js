@@ -22,13 +22,27 @@ router.route('/')
 
 router.route('/:id')
 	.get(function(req, res) {
-	  res.send('respond with a resource');
-	})
+		let game = Game.findOne({_id: req.params.id});
+		game.exec((err,game) => {
+			if(err) res.status(404).send(err)
+
+			res.jsaon(game)
+		});
+	});
 	.put(function(req, res) {
-	  res.send('give me an updated resource');
-	})
+		let game = Game.update({_id: req.params.id}, req.body);
+		game.exec((err, numAffected) => {
+			if(err) res.staut(404).send(err);
+
+			res.json({message: "Game successfully updated!", game: req.body})
+		});
+	});
 	.delete(function(req, res) {
-	  res.send('this should remove a resource');
+	  Game.remove({_id: req.params.id}, function(err) {
+			if(err) res.status(204).send(er);
+
+			res.json({message: "Game successfully deleted!"})
+		});
 	});
 
 module.exports = router;
